@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pribadi - AMF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background: #0a0e17;
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        /* Navigation - Dark */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(20, 143, 150, 0.3);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background: rgba(10, 14, 23, 0.98);
+            box-shadow: 0 5px 25px rgba(20, 143, 150, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #148F96, #801A33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-link {
+            color: rgba(224, 230, 237, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #148F96, #801A33);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #148F96;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section - Dark */
+        .hero {
+            background: linear-gradient(135deg, #0f1a26 0%, #1a2634 50%, #234566 100%);
+            color: #e0e6ed;
+            padding: 140px 0 80px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+            border-bottom: 1px solid rgba(20, 143, 150, 0.2);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(20,143,150,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(128,26,51,0.1) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="0.8" fill="rgba(255,255,255,0.08)"/><circle cx="50" cy="10" r="0.6" fill="rgba(255,255,255,0.12)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+            animation: float 25s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(1deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #e0e6ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            color: #b8c0cc;
+            animation: slideInLeft 1s ease-out 0.2s both;
+        }
+
+        .hero-text .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #148F96, #801A33);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(20,143,150,0.3);
+            animation: slideInLeft 1s ease-out 0.4s both;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .hero-text .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(128,26,51,0.4);
+        }
+
+        .profile-img {
+            text-align: center;
+            animation: slideInRight 1s ease-out 0.4s both;
+        }
+
+        .profile-img img {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 8px solid rgba(20, 143, 150, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(20,143,150,0.2);
+            object-fit: cover;
+            transition: all 0.4s ease;
+            animation: pulse 3s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-img img:hover {
+            transform: scale(1.05);
+            border-color: #801A33;
+            box-shadow: 
+                0 35px 70px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(128,26,51,0.5);
+        }
+
+        /* Section Styles - Dark */
+        .section {
+            padding: 100px 0;
+            scroll-margin-top: 100px;
+            background: #0f1a26;
+        }
+
+        .section:nth-child(even) {
+            background: linear-gradient(135deg, #0a0e17 0%, #0f1a26 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #148F96, #801A33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #148F96, #801A33);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            animation: expand 1s ease-out;
+            box-shadow: 0 0 20px rgba(20,143,150,0.5);
+        }
+
+        /* Cards - Dark */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 60px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: rgba(15, 26, 38, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(20, 143, 150, 0.2);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #148F96, #801A33);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 
+                0 35px 70px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(20,143,150,0.3);
+            background: rgba(15, 26, 38, 0.95);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #148F96, #801A33);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(20,143,150,0.3);
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .skill-item {
+            text-align: center;
+            padding: 25px 15px;
+            background: linear-gradient(135deg, rgba(20,143,150,0.2), rgba(35,69,102,0.3));
+            color: #e0e6ed;
+            border: 1px solid rgba(20,143,150,0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: linear-gradient(135deg, #148F96, #801A33);
+            box-shadow: 0 15px 40px rgba(20,143,150,0.4);
+            border-color: rgba(128,26,51,0.5);
+        }
+
+        /* Contact Section - Dark */
+        .contact {
+            background: linear-gradient(135deg, #1a2634 0%, #234566 50%, #148F96 100%);
+            color: #e0e6ed;
+            border-top: 1px solid rgba(20,143,150,0.3);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e0e6ed;
+            text-decoration: none;
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-link:hover {
+            background: linear-gradient(135deg, #148F96, #801A33);
+            transform: translateY(-5px);
+            color: white;
+            box-shadow: 0 15px 35px rgba(20,143,150,0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: rgba(10, 14, 23, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 30px 0;
+                gap: 20px;
+                border-top: 1px solid rgba(20,143,150,0.3);
+            }
+            .nav-menu.active { left: 0; }
+            .hero-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .profile-img img { width: 220px; height: 220px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 30px; }
+            .section { padding: 60px 0; }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes expand {
+            from { width: 0; }
+            to { width: 80px; }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-user"></i> ANDI MUHAMMAD FARHAN
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#tentang" class="nav-link" data-section="tentang">Tentang</a></li>
+                <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+                <li><a href="#karakter" class="nav-link" data-section="karakter">Karakter</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact">Kontak</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Halo, Saya Andi Muhammad Farhan</h1>
+                    <p>Mahasiswi program studi Agribisnis Peternakan, aktif berorganisasi, tertarik pada kewirausahaan dan pengembangan usaha peternakan.</p>
+                    <a href="#contact" class="cta-button">Hubungi Saya <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="profile-img">
+                    <img src="FARHAN.jpeg.jpg" alt="Foto Profil">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Identitas & Pendidikan -->
+    <section class="section" id="tentang">
+        <div class="container">
+            <h2 class="section-title fade-in">Tentang Saya</h2>
+            <div class="grid-2">
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-user"></i></div>
+                    <h3>Identitas Singkat</h3>
+                    <p><strong>Andi Muhammad Farhan</strong><br>
+                       19 tahun | Sinjai, Sulawesi Selatan<br>
+                       Mahasiswa | Universitas Hasanuddin<br><br>
+                       "Saya adalah individu yang <strong>suka belajar hal baru, aktif di lembaga, dan senang berproses menjadi versi terbaik diri.</strong>"</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Latar Belakang Pendidikan</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;"><strong>SDN 23 BIRINGERE</strong></li>
+                        <li style="margin-bottom: 15px;"><strong>SMPN 7 SINJAI</strong></li>
+                        <li style="margin-bottom: 15px;"><strong>SMAN 5 SINJAI</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Pengalaman -->
+    <section class="section" id="skills">
+        <div class="container">
+            <h2 class="section-title fade-in">Keahlian & Pengalaman</h2>
+            <div class="grid-2">
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Keahlian Utama Dan Capaian</h3>
+                    <div class="skills-grid">
+    
+    <div class="skill-item">
+        <i class="fas fa-pen-ruler"></i><br>
+        Memiliki sifat dan jiwa kepemimpinan
+    </div>
+
+    <div class="skill-item">
+        <i class="fas fa-photo-film"></i><br>
+        Mampu bekerja sama dengan tim 
+    </div>
+
+    <div class="skill-item">
+        <i class="fas fa-hashtag"></i><br>
+        Menjadi Ketua Umum 
+    </div>
+
+</div>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-briefcase"></i></div>
+                    <h3>Pengalaman Organisasi</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="margin-bottom: 25px;">
+                            <strong>[Anggota] Player Futsal .</strong> Ekskul SMA 5 SINJAI<br>
+                            <small style="color: #b8c0cc;">2019/2020</small><br>
+                        </div>
+                        <div>
+                            <strong>[Staff] Departemen pengembangan sumber daya manusia. </strong> HIMAGTER UH<br>
+                            <small style="color: #b8c0cc;">2021/2022</small><br>
+                        </div>
+                        <br>
+                        <div>
+                            <strong>Ketua Panitia Kaderisasi. </strong> HIMAGTER UH<br>
+                            <small style="color: #b8c0cc;">2022</small><br>
+                        </div>
+                        <br>
+                        <div>
+                            <strong>Ketua Panitia Latihan kepemimpinan 1 Vokasi. </strong> BEM KM FV UH<br>
+                            <small style="color: #b8c0cc;">2022/2023</small><br>
+                        </div>
+                        <br>
+                        <div>
+                            <strong>[Staff] Kajian dan Aksi Strategis. </strong>BEM KM FV UH<br>
+                            <small style="color: #b8c0cc;">2024/2025</small><br>
+                        </div>
+                        <br>
+                        <div>
+                            <strong>[Ketua Umum] Himpunan. </strong>HIMAGTER UH<br>
+                            <small style="color: #b8c0cc;">2025/2026</small><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Karakter & Tujuan -->
+    <section class="section" id="karakter">
+        <div class="container">
+            <h2 class="section-title fade-in">Karakter & Visi</h2>
+            <div class="grid-3">
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Kepribadian</h3>
+                    <p>✅ <strong>Growth-oriented</strong><br>
+                       ✅ <strong>Collaborative</strong><br>
+                       ✅ <strong>Proactive</strong><br>
+                       ✅ <strong>Goal-driven</strong></p>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Tujuan & Motivasi</h3>
+                    <p>"<em>Mengasah kemampuan diri melalui pengalaman nyata dan tantangan baru.</em>"<br><br>
+                       "<em>Menjadi individu yang berpengaruh dan mampu menciptakan inovasi di bidang yang ditekuni.</em>"<br><br>
+                       <strong style="color: #148F96;">Motivasi:</strong> Selama mau berusaha, peluang berhasil itu akan selalu ada.</p>
+    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <h2 class="section-title" style="color: #e0e6ed;">Hubungi Saya</h2>
+            <div style="text-align: center; font-size: 1.1rem; margin-bottom: 30px; color: #b8c0cc;">
+                Siap untuk berkolaborasi dan menciptakan sesuatu yang luar biasa bersama.
+            </div>
+            <div class="contact-links">
+                <a href="mailto:email@contoh.com" class="contact-link">
+                    <i class="fas fa-envelope"></i> fmuh2440@gmail.com
+                </a>
+                <a href="tel:+6281244364149" class="contact-link">
+                    <i class="fas fa-phone"></i> +62 812-4436-4149
+                </a>
+                <a href="https://wa.me/6281244364149" class="contact-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling & active nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
